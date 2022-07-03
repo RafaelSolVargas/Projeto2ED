@@ -22,12 +22,15 @@ public:
 
   ~Trie();
   void insert(string key, unsigned long posicao, unsigned long comprimento);
-  bool search(string key);
-  bool empty(Node *node);
-  Node *remove(Node *node, string key, int depth = 0);
+  bool contains(string key);
+  bool empty();
+  Node *search(string key);
+  int *processPrefix(string key)
 
-  Node *root = new Node((char)nullptr);
+      Node *root = new Node('1');
 };
+
+Trie::~Trie() {}
 
 void Trie::insert(string key, unsigned long posicao,
                   unsigned long comprimento) {
@@ -44,7 +47,7 @@ void Trie::insert(string key, unsigned long posicao,
   current->comprimento = comprimento;
 }
 
-bool Trie::search(string key) {
+bool Trie::contains(string key) {
   Node *current = root;
 
   for (int i = 0; i < key.length(); i++) {
@@ -57,48 +60,38 @@ bool Trie::search(string key) {
   return (current != NULL && current->comprimento != 0);
 }
 
-bool Trie::empty(Trie::Node *node) {
+bool Trie::empty() {
   for (int i = 0; i < ALPHABET_SIZE; i++) {
-    if (node->children[i])
+    if (root->children[i])
       return false;
   }
   return true;
 }
 
-// Recursive function to delete a key from given Trie
-Trie::Node *Trie::remove(Trie::Node *node, string key, int depth = 0) {
-  // If tree is empty
-  if (!node)
+// retorna NULL caso não encontre (sub)string
+// serve para checar prefixos também (buscar por substring)
+Trie::Node *Trie::search(string key) {
+  Node *current = root;
+  bool isValid = true;
+  for (int i = 0; i < key.length(); i++) {
+    int index = key[i] - 'a';
+    if (!current->children[index])
+      isValid = false;
+    break;
+    current = current->children[index];
+  }
+
+  if (current == NULL)
+    isValid = false;
+
+  if (isValid) {
+    return current;
+  } else {
     return NULL;
-
-  // If last character of key is being processed
-  if (depth == key.size()) {
-    // This node is no more end of word after
-    // removal of given key
-    if (node->posicao != 0 && node->comprimento != 0) {
-      node->posicao = 0;
-      node->comprimento = 0;
-    }
-
-    // If given is not prefix of any other word
-    if (this->empty(node)) {
-      delete node;
-      node = NULL;
-    }
-    return node;
   }
+}
 
-  // If not last character, recur for the child
-  // obtained using ASCII value
-  int index = key[depth] - 'a';
-  node->children[index] = remove(node->children[index], key, depth + 1);
-
-  // If root does not have any child (its only child got
-  // deleted), and it is not end of another word.
-  if (this->empty(node) && node->posicao != 0 && node->comprimento != 0) {
-    delete (node);
-    node = NULL;
-  }
-
-  return node;
+int *Trie::processPrefix(string key) {
+  Node *node = search(key);
+  int *answer = new int[2];
 }
