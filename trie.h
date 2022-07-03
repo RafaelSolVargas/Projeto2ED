@@ -10,6 +10,9 @@ public:
     class Node {
     public:
         Node(char charValue) {
+            for (int i = 0; i < ALPHABET_SIZE; i++) {
+                this->children[i] = NULL;
+            }
             selfValue = charValue;
             position = 0;
             lenght = 0;
@@ -74,11 +77,14 @@ void Trie::insert(string key, unsigned long position, unsigned long lenght) {
     // Caminha pela árvore criando os nodes necessários para chegar no leaf node da palavra
     for (int i = 0; i < key.length(); i++) {
         int index = key[i] - 'a';
+
         // Se ainda não possuir filho para o char específico
         if (!current->children[index]) {
+            // cout << "Ae" << endl;
             // printf("Pai %c criando um novo filho %c\n", current->selfValue, key[i]);
             current->children[index] = new Node(key[i]);
         }
+        // cout << "Ué" << endl;
         // Passa para o filho
         current = current->children[index];
     }
@@ -143,6 +149,6 @@ void Trie::processPrefix(string key) {
     }
 
     cout << key << " is prefix of " << node->getQuantChildren() << " words\n";
-    cout << key << " is at " << node->getQuantChildren();
-    printf(" (%ld,%ld)\n", node->position, node->lenght);
+    cout << key << " is at ";
+    printf("(%ld,%ld)\n", node->position, node->lenght);
 }
