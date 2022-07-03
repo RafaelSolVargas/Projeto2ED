@@ -3,36 +3,40 @@
 
 int main() {
 
-  using namespace std;
+    using namespace std;
 
-  string filename;
-  string word;
+    string filename;
+    string word;
 
-  string keys[] = {"the", "a", "there", "answer", "any", "by", "bye", "their"};
-  int n = sizeof(keys) / sizeof(keys[0]);
+    string keys[] = {"the", "a", "there", "answer", "any", "by", "bye", "their"};
+    int n = sizeof(keys) / sizeof(keys[0]);
 
-  Trie arv = Trie();
+    Trie arv = Trie();
 
-  for (int i = 0; i < n; i++)
-    arv.insert(keys[i], i + 1, i + 1);
+    for (int i = 0; i < n; i++)
+        arv.insert(keys[i], i + 1, i + 1);
 
-  // Search for different keys
-  arv.search("the") ? cout << "Yes\n" : cout << "No\n";
-  arv.search("these") ? cout << "Yes\n" : cout << "No\n";
-  arv.search("their") ? cout << "Yes\n" : cout << "No\n";
-  arv.search("thaw") ? cout << "Yes\n" : cout << "No\n";
+    // Verify if tree contains keys
+    arv.contains("these") ? cout << "Yes\n" : cout << "No\n";
+    arv.contains("their") ? cout << "Yes\n" : cout << "No\n";
+    arv.contains("thaw") ? cout << "Yes\n" : cout << "No\n";
 
-  /* cin >> filename;  // entrada
+    // Process Keys
+    arv.processPrefix("there");
+    arv.processPrefix("their");
+    arv.processPrefix("thaw");
 
-  cout << filename << endl;  // esta linha deve ser removida
+    /* cin >> filename;  // entrada
 
-  while (1) {  // leitura das palavras ate' encontrar "0"
-      cin >> word;
-      if (word.compare("0") == 0) {
-          break;
-      }
-      cout << word << endl;
-  } */
+    cout << filename << endl;  // esta linha deve ser removida
 
-  return 0;
+    while (1) {  // leitura das palavras ate' encontrar "0"
+        cin >> word;
+        if (word.compare("0") == 0) {
+            break;
+        }
+        cout << word << endl;
+    } */
+
+    return 0;
 }

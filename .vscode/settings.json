@@ -1,8 +1,5 @@
 {
-  "files.associations": {
-    "*.html": "html",
-    "xstring": "c",
-    "string": "c",
-    "cstring": "c"
-  }
+    "files.associations": {
+        "iostream": "cpp"
+    }
 }
