@@ -28,9 +28,10 @@ public:
         int getQuantChildren() {
             int quant = 0;
 
-            // Se for o final de uma palavra
-            if (this->position)
+            // Se o prefixo já for uma palavra, conta como uma
+            if (this->lenght != 0) {
                 quant++;
+            }
 
             for (int i = 0; i < ALPHABET_SIZE; i++) {
                 if (this->children[i]) {
@@ -78,17 +79,16 @@ void Trie::insert(string key, unsigned long position, unsigned long lenght) {
     for (int i = 0; i < key.length(); i++) {
         int index = key[i] - 'a';
 
+        // cout << key[i] << endl;
+        // cout << index << endl;
         // Se ainda não possuir filho para o char específico
         if (!current->children[index]) {
-            // cout << "Ae" << endl;
-            // printf("Pai %c criando um novo filho %c\n", current->selfValue, key[i]);
             current->children[index] = new Node(key[i]);
         }
-        // cout << "Ué" << endl;
         // Passa para o filho
         current = current->children[index];
     }
-
+    // cout << "C" << endl;
     // Já no leaf node da palavra atualiza a posição e comprimento da palavra no dicionário
     current->position = position;
     current->lenght = lenght;
@@ -148,7 +148,11 @@ void Trie::processPrefix(string key) {
         return;
     }
 
-    cout << key << " is prefix of " << node->getQuantChildren() << " words\n";
-    cout << key << " is at ";
-    printf("(%ld,%ld)\n", node->position, node->lenght);
+    int quantWords = node->getQuantChildren();
+    cout << key << " is prefix of " << quantWords << " words\n";
+
+    if (node->lenght != 0) {
+        cout << key << " is at ";
+        printf("(%ld,%ld)\n", node->position, node->lenght);
+    }
 }
